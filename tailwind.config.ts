@@ -52,6 +52,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Neon colors
+				'neon-green': 'hsl(var(--neon-green))',
+				'neon-purple': 'hsl(var(--neon-purple))',
+				'neon-teal': 'hsl(var(--neon-teal))',
+				'neon-blue': 'hsl(var(--neon-blue))',
+				// Surface colors
+				'surface-primary': 'hsl(var(--surface-primary))',
+				'surface-secondary': 'hsl(var(--surface-secondary))',
+				'surface-tertiary': 'hsl(var(--surface-tertiary))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
