@@ -11,14 +11,14 @@ export const Footer = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-neon-green to-neon-teal rounded-lg flex items-center justify-center">
                 <Brain className="w-6 h-6 text-background" />
               </div>
-              <div className="text-xl font-bold text-neon">AI ka Thanos</div>
+              <div className="text-xl font-bold text-neon">Multi AI Prompt Tool</div>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md leading-relaxed">
               The world's most powerful AI platform. Access all premium AI models 
               in one unified interface. Get superhuman results at a fraction of the cost.
             </p>
             <div className="flex gap-4">
-              <a href="mailto:support@aikathanosai.com" className="w-10 h-10 bg-surface-secondary hover:bg-neon-green/20 rounded-lg flex items-center justify-center transition-colors group">
+              <a href="mailto:support@multiaiprompt.com" className="w-10 h-10 bg-surface-secondary hover:bg-neon-green/20 rounded-lg flex items-center justify-center transition-colors group">
                 <Mail className="w-5 h-5 text-muted-foreground group-hover:text-neon-green transition-colors" />
               </a>
               <a href="https://wa.me/1234567890" className="w-10 h-10 bg-surface-secondary hover:bg-neon-purple/20 rounded-lg flex items-center justify-center transition-colors group">
@@ -45,7 +45,7 @@ export const Footer = () => {
             <ul className="space-y-3">
               <li><a href="#faq" className="text-muted-foreground hover:text-neon-purple transition-colors">FAQ</a></li>
               <li><a href="#help" className="text-muted-foreground hover:text-neon-purple transition-colors">Help Center</a></li>
-              <li><a href="mailto:support@aikathanosai.com" className="text-muted-foreground hover:text-neon-purple transition-colors">Contact Us</a></li>
+              <li><a href="mailto:support@multiaiprompt.com" className="text-muted-foreground hover:text-neon-purple transition-colors">Contact Us</a></li>
               <li><a href="#status" className="text-muted-foreground hover:text-neon-purple transition-colors">System Status</a></li>
             </ul>
           </div>
@@ -54,7 +54,7 @@ export const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-border/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-muted-foreground">
-            © 2024 AI ka Thanos. All rights reserved.
+            © 2024 Multi AI Prompt Tool. All rights reserved.
           </div>
           
           <div className="flex gap-6 text-sm">

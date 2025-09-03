@@ -1,4 +1,4 @@
-import { Brain, Zap, Globe, Search, Sparkles, Code } from "lucide-react";
+import { Brain, Zap, Globe, Search, Sparkles, Code, MessageSquare, Bot } from "lucide-react";
 
 const models = [
   {
@@ -42,12 +42,28 @@ const models = [
     description: "Witty AI with access to real-time social data"
   },
   {
-    name: "Mixtral",
-    company: "Mistral AI",
-    icon: Code,
-    strengths: ["Code", "Efficiency", "Privacy"],
+    name: "Meta AI",
+    company: "Meta",
+    icon: MessageSquare,
+    strengths: ["Social Context", "Creativity", "Multimodal"],
     color: "neon-purple",
-    description: "Efficient open-source model for coding tasks"
+    description: "Advanced AI with strong social and creative capabilities"
+  },
+  {
+    name: "Copilot",
+    company: "Microsoft",
+    icon: Code,
+    strengths: ["Code", "Productivity", "Integration"],
+    color: "neon-teal",
+    description: "Intelligent assistant for coding and productivity"
+  },
+  {
+    name: "DeepSeek",
+    company: "DeepSeek",
+    icon: Bot,
+    strengths: ["Reasoning", "Math", "Analysis"],
+    color: "neon-blue",
+    description: "Powerful reasoning model for complex problem solving"
   }
 ];
 

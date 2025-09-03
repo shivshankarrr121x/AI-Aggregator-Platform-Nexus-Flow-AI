@@ -7,7 +7,7 @@ export const PricingSection = () => {
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            <span className="text-neon">6 AIs for Half the Price</span>
+            <span className="text-neon">7 AIs for Half the Price</span>
             <br />
             <span className="text-foreground">of One</span>
           </h2>
@@ -26,13 +26,13 @@ export const PricingSection = () => {
             <div className="p-8">
               <h3 className="text-2xl font-bold mb-2">Monthly Plan</h3>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-neon-green">₹1</span>
+                <span className="text-4xl font-bold text-neon-green">₹99</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
               
               <ul className="space-y-3 mb-8">
                 {[
-                  "Access to all 6 AI models",
+                  "Access to all 7 AI models",
                   "Unlimited messages",
                   "Compare responses side-by-side",
                   "Prompt optimization",
@@ -49,7 +49,7 @@ export const PricingSection = () => {
               </ul>
               
               <Button className="w-full btn-hero">
-                Get Started - ₹1/month
+                Get Started - ₹99/month
               </Button>
             </div>
           </div>
@@ -64,10 +64,10 @@ export const PricingSection = () => {
             <div className="p-8">
               <h3 className="text-2xl font-bold mb-2">Yearly Plan</h3>
               <div className="mb-2">
-                <span className="text-4xl font-bold text-neon-purple">₹10</span>
+                <span className="text-4xl font-bold text-neon-purple">₹999</span>
                 <span className="text-muted-foreground">/year</span>
               </div>
-              <div className="text-sm text-neon-green mb-6">Save 92% • Just ₹0.83/month</div>
+              <div className="text-sm text-neon-green mb-6">Save 17% • Just ₹83/month</div>
               
               <ul className="space-y-3 mb-8">
                 {[
@@ -88,7 +88,7 @@ export const PricingSection = () => {
               </ul>
               
               <Button className="w-full bg-gradient-to-r from-neon-purple to-neon-blue text-background font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105">
-                Get Started - ₹10/year
+                Get Started - ₹999/year
               </Button>
             </div>
           </div>

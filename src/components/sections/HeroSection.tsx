@@ -28,7 +28,7 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
             
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
               <span className="text-neon bg-gradient-to-r from-neon-green via-neon-teal to-neon-purple bg-clip-text text-transparent">
-                AI ka Thanos
+                Multi AI Prompt Tool
               </span>
               <br />
               <span className="text-foreground">One Platform.</span>
@@ -59,7 +59,7 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           <div className="flex items-center justify-center lg:justify-start gap-8 text-sm text-muted-foreground">
             <div>✅ No Credit Card Required</div>
             <div>⚡ Instant Access</div>
-            <div>🚀 6 AI Models</div>
+            <div>🚀 7 AI Models</div>
           </div>
         </div>
         
@@ -68,7 +68,7 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           <div className="relative rounded-2xl overflow-hidden">
             <img 
               src={heroInterface} 
-              alt="AI ka Thanos Interface" 
+              alt="Multi AI Prompt Tool Interface" 
               className="w-full h-auto rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface-primary/20 to-transparent rounded-2xl" />
@@ -76,12 +76,12 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           
           {/* Floating stats */}
           <div className="absolute -top-4 -right-4 card-glow p-4 animate-float">
-            <div className="text-2xl font-bold text-neon-green">6 AIs</div>
+            <div className="text-2xl font-bold text-neon-green">7 AIs</div>
             <div className="text-sm text-muted-foreground">One Platform</div>
           </div>
           
           <div className="absolute -bottom-4 -left-4 card-glow p-4 animate-float" style={{ animationDelay: '2s' }}>
-            <div className="text-2xl font-bold text-neon-purple">₹10/year</div>
+            <div className="text-2xl font-bold text-neon-purple">₹99/month</div>
             <div className="text-sm text-muted-foreground">Premium Access</div>
           </div>
         </div>

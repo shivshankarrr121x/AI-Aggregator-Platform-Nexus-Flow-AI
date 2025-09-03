@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Send, Brain, Sparkles, Globe, Search, Zap, Code } from "lucide-react";
+import { ArrowLeft, Send, Brain, Sparkles, Globe, Search, Zap, Code, MessageSquare, Bot } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Message {
@@ -22,7 +22,9 @@ const aiModels = [
   { name: "Gemini Pro", icon: Globe, color: "neon-teal", provider: "gemini" },
   { name: "Perplexity", icon: Search, color: "neon-blue", provider: "openrouter" },
   { name: "Grok", icon: Zap, color: "neon-green", provider: "openrouter" },
-  { name: "Mixtral", icon: Code, color: "neon-purple", provider: "openrouter" }
+  { name: "Meta AI", icon: MessageSquare, color: "neon-purple", provider: "openrouter" },
+  { name: "Copilot", icon: Code, color: "neon-teal", provider: "openrouter" },
+  { name: "DeepSeek", icon: Bot, color: "neon-blue", provider: "openrouter" }
 ];
 
 export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
@@ -94,7 +96,9 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         'Claude': 'anthropic/claude-3-haiku',
         'Perplexity': 'perplexity/llama-3.1-sonar-small-128k-online',
         'Grok': 'x-ai/grok-beta',
-        'Mixtral': 'mistralai/mixtral-8x7b-instruct'
+        'Meta AI': 'meta-llama/llama-3.1-8b-instruct:free',
+        'Copilot': 'microsoft/wizardlm-2-8x22b',
+        'DeepSeek': 'deepseek/deepseek-chat'
       };
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -191,8 +195,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-neon">AI ka Thanos Chat</h1>
-              <p className="text-sm text-muted-foreground">All 6 AI models responding in real-time</p>
+              <h1 className="text-2xl font-bold text-neon">Multi AI Prompt Tool Chat</h1>
+              <p className="text-sm text-muted-foreground">All 8 AI models responding in real-time</p>
             </div>
           </div>
         </div>
@@ -206,8 +210,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
               <div className="w-16 h-16 bg-gradient-to-br from-neon-green to-neon-teal rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Brain className="w-8 h-8 text-background" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">Welcome to AI ka Thanos</h3>
-              <p className="text-muted-foreground">Ask anything and get responses from all 6 AI models instantly</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Welcome to Multi AI Prompt Tool</h3>
+              <p className="text-muted-foreground">Ask anything and get responses from all 8 AI models instantly</p>
             </div>
           )}
 
@@ -290,7 +294,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask all 6 AIs anything..."
+              placeholder="Ask all 8 AIs anything..."
               disabled={loading}
               className="flex-1 bg-surface-secondary border-border/30 text-foreground placeholder:text-muted-foreground"
             />
