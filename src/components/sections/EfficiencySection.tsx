@@ -10,7 +10,7 @@ export const EfficiencySection = () => {
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
             <span className="text-neon">One Window.</span>
             <br />
-            <span className="text-foreground">Six Perspectives.</span>
+            <span className="text-foreground">Eight Perspectives.</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Run prompts across GPT, Claude, Gemini & more instantly. 
@@ -22,18 +22,18 @@ export const EfficiencySection = () => {
           {/* Left: Comparison Table */}
           <div className="card-glow">
             <h3 className="text-2xl font-semibold mb-6 text-center text-neon-green">
-              Traditional vs AI ka Thanos
+              Traditional vs Multi AI Prompt Tool
             </h3>
             
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-surface-secondary/50">
                 <div className="text-sm text-muted-foreground">Traditional Approach</div>
-                <div className="text-sm text-foreground font-semibold">AI ka Thanos</div>
+                <div className="text-sm text-foreground font-semibold">Multi AI Prompt Tool</div>
               </div>
               
               {[
-                { traditional: "6 separate subscriptions", thanos: "1 unified platform" },
-                { traditional: "₹3000+/month total cost", thanos: "₹10/year only" },
+                { traditional: "8 separate subscriptions", thanos: "1 unified platform" },
+                { traditional: "₹3000+/month total cost", thanos: "₹999/year only" },
                 { traditional: "Switch between apps", thanos: "Compare side-by-side" },
                 { traditional: "Miss better answers", thanos: "Get all perspectives" },
                 { traditional: "Manage multiple accounts", thanos: "Single dashboard" }
@@ -66,15 +66,15 @@ export const EfficiencySection = () => {
               <div className="text-3xl font-bold text-neon-teal mb-2">99%</div>
               <div className="text-lg font-semibold mb-2">Cost Savings</div>
               <div className="text-muted-foreground">
-                Pay ₹10/year instead of ₹3000+/month for premium AI access
+                Pay ₹999/year instead of ₹3000+/month for premium AI access
               </div>
             </div>
             
             <div className="card-glow">
-              <div className="text-3xl font-bold text-neon-green mb-2">6 AIs</div>
+              <div className="text-3xl font-bold text-neon-green mb-2">8 AIs</div>
               <div className="text-lg font-semibold mb-2">in One Interface</div>
               <div className="text-muted-foreground">
-                GPT-4, Claude, Gemini, Perplexity, Grok & more unified
+                GPT-4, Claude, Gemini, Perplexity, Grok, Meta AI, Copilot & DeepSeek unified
               </div>
             </div>
           </div>
