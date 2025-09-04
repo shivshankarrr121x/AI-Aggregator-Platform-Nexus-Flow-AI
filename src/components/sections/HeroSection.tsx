@@ -59,7 +59,7 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           <div className="flex items-center justify-center lg:justify-start gap-8 text-sm text-muted-foreground">
             <div>✅ No Credit Card Required</div>
             <div>⚡ Instant Access</div>
-            <div>🚀 7 AI Models</div>
+            <div>🚀 8 AI Models</div>
           </div>
         </div>
         
@@ -76,7 +76,7 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           
           {/* Floating stats */}
           <div className="absolute -top-4 -right-4 card-glow p-4 animate-float">
-            <div className="text-2xl font-bold text-neon-green">7 AIs</div>
+            <div className="text-2xl font-bold text-neon-green">8 AIs</div>
             <div className="text-sm text-muted-foreground">One Platform</div>
           </div>
           

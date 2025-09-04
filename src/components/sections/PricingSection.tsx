@@ -7,7 +7,7 @@ export const PricingSection = () => {
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            <span className="text-neon">7 AIs for Half the Price</span>
+            <span className="text-neon">8 AIs for Half the Price</span>
             <br />
             <span className="text-foreground">of One</span>
           </h2>
@@ -32,7 +32,7 @@ export const PricingSection = () => {
               
               <ul className="space-y-3 mb-8">
                 {[
-                  "Access to all 7 AI models",
+                  "Access to all 8 AI models",
                   "Unlimited messages",
                   "Compare responses side-by-side",
                   "Prompt optimization",

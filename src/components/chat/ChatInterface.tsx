@@ -1,46 +1,65 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Send, Brain, Sparkles, Globe, Search, Zap, Code, MessageSquare, Bot } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { Brain, Send, Settings, X, ChevronRight, Loader2, ArrowLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
 
-interface Message {
+interface AIModel {
   id: string;
-  content: string;
-  sender: 'user' | 'ai';
-  model?: string;
+  name: string;
+  color: string;
+  enabled: boolean;
+  isLoading?: boolean;
+}
+
+interface ChatMessage {
+  id: string;
+  message: string;
+  responses: { [key: string]: string };
   timestamp: Date;
 }
+
+const INITIAL_MODELS: AIModel[] = [
+  { id: "gpt-4", name: "GPT-4", color: "bg-green-500", enabled: true },
+  { id: "claude", name: "Claude", color: "bg-orange-500", enabled: true },
+  { id: "gemini", name: "Gemini Pro", color: "bg-blue-500", enabled: true },
+  { id: "perplexity", name: "Perplexity", color: "bg-cyan-500", enabled: true },
+  { id: "grok", name: "Grok", color: "bg-purple-500", enabled: false },
+  { id: "meta-ai", name: "Meta AI", color: "bg-blue-600", enabled: false },
+  { id: "copilot", name: "Copilot", color: "bg-indigo-500", enabled: false },
+  { id: "deepseek", name: "DeepSeek", color: "bg-teal-500", enabled: false }
+];
 
 interface ChatInterfaceProps {
   onBack: () => void;
 }
 
-const aiModels = [
-  { name: "GPT-4", icon: Brain, color: "neon-green", provider: "openai" },
-  { name: "Claude", icon: Sparkles, color: "neon-purple", provider: "openrouter" },
-  { name: "Gemini Pro", icon: Globe, color: "neon-teal", provider: "gemini" },
-  { name: "Perplexity", icon: Search, color: "neon-blue", provider: "openrouter" },
-  { name: "Grok", icon: Zap, color: "neon-green", provider: "openrouter" },
-  { name: "Meta AI", icon: MessageSquare, color: "neon-purple", provider: "openrouter" },
-  { name: "Copilot", icon: Code, color: "neon-teal", provider: "openrouter" },
-  { name: "DeepSeek", icon: Bot, color: "neon-blue", provider: "openrouter" }
-];
-
 export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [models, setModels] = useState<AIModel[]>(INITIAL_MODELS);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const [showModelSettings, setShowModelSettings] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const enabledModels = models.filter(m => m.enabled);
 
   useEffect(() => {
-    scrollToBottom();
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messages]);
 
+  const toggleModel = (modelId: string) => {
+    setModels(prev => prev.map(m => 
+      m.id === modelId ? { ...m, enabled: !m.enabled } : m
+    ));
+  };
+
+  // API calling functions from the original code
   const callOpenAI = async (message: string): Promise<string> => {
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -124,188 +143,234 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   };
 
   const handleSendMessage = async () => {
-    if (!input.trim() || loading) return;
+    if (!inputMessage.trim() || enabledModels.length === 0) return;
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: input,
-      sender: 'user',
+    const messageId = Date.now().toString();
+    const newMessage: ChatMessage = {
+      id: messageId,
+      message: inputMessage,
+      responses: {},
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInput("");
-    setLoading(true);
+    setMessages(prev => [...prev, newMessage]);
+    setInputMessage("");
 
-    try {
-      // Call all AI models in parallel
-      const aiPromises = aiModels.map(async (model) => {
+    // Set loading state for enabled models
+    setModels(prev => prev.map(m => 
+      m.enabled ? { ...m, isLoading: true } : m
+    ));
+
+    // Call AI APIs in parallel
+    const promises = enabledModels.map(async (model) => {
+      try {
         let response = "";
         
-        if (model.provider === "openai") {
-          response = await callOpenAI(input);
-        } else if (model.provider === "gemini") {
-          response = await callGemini(input);
-        } else if (model.provider === "openrouter") {
-          response = await callOpenRouter(input, model.name);
+        if (model.id === "gpt-4") {
+          response = await callOpenAI(inputMessage);
+        } else if (model.id === "gemini") {
+          response = await callGemini(inputMessage);
+        } else {
+          response = await callOpenRouter(inputMessage, model.name);
         }
 
-        return {
-          id: `${Date.now()}-${model.name}`,
-          content: response,
-          sender: 'ai' as const,
-          model: model.name,
-          timestamp: new Date()
-        };
-      });
+        setMessages(prev => prev.map(msg => 
+          msg.id === messageId 
+            ? { ...msg, responses: { ...msg.responses, [model.id]: response } }
+            : msg
+        ));
 
-      const aiResponses = await Promise.all(aiPromises);
-      setMessages(prev => [...prev, ...aiResponses]);
-    } catch (error) {
-      console.error('Error calling AI models:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setModels(prev => prev.map(m => 
+          m.id === model.id ? { ...m, isLoading: false } : m
+        ));
+      } catch (error) {
+        const errorMsg = `${model.name} Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        
+        setMessages(prev => prev.map(msg => 
+          msg.id === messageId 
+            ? { ...msg, responses: { ...msg.responses, [model.id]: errorMsg } }
+            : msg
+        ));
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  const getModelColor = (modelName: string) => {
-    const model = aiModels.find(m => m.name === modelName);
-    return model?.color || 'neon-green';
-  };
-
-  const getModelIcon = (modelName: string) => {
-    const model = aiModels.find(m => m.name === modelName);
-    return model?.icon || Brain;
+        setModels(prev => prev.map(m => 
+          m.id === model.id ? { ...m, isLoading: false } : m
+        ));
+      }
+    });
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="fixed inset-0 bg-surface-primary flex flex-col">
       {/* Header */}
-      <div className="border-b border-border/20 bg-surface-primary/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center gap-4">
-            <Button onClick={onBack} variant="ghost" className="p-2">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
+      <div className="flex items-center justify-between p-4 border-b border-border/20">
+        <div className="flex items-center gap-4">
+          <Button onClick={onBack} variant="ghost" className="p-2">
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-neon-green to-neon-teal rounded-lg flex items-center justify-center">
+              <Brain className="w-5 h-5 text-background" />
+            </div>
             <div>
-              <h1 className="text-2xl font-bold text-neon">Multi AI Prompt Tool Chat</h1>
-              <p className="text-sm text-muted-foreground">All 8 AI models responding in real-time</p>
+              <h1 className="text-lg font-bold text-neon">Multi AI Prompt Tool</h1>
+              <p className="text-sm text-muted-foreground">{enabledModels.length} of 8 AIs active</p>
             </div>
           </div>
         </div>
+        
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => setShowModelSettings(!showModelSettings)}
+          className="border-border/30"
+        >
+          <Settings className="w-4 h-4 mr-2" />
+          Models ({enabledModels.length})
+        </Button>
       </div>
 
-      {/* Messages */}
-      <ScrollArea className="flex-1 p-6">
-        <div className="container mx-auto max-w-6xl space-y-6">
-          {messages.length === 0 && (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gradient-to-br from-neon-green to-neon-teal rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Brain className="w-8 h-8 text-background" />
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">Welcome to Multi AI Prompt Tool</h3>
-              <p className="text-muted-foreground">Ask anything and get responses from all 8 AI models instantly</p>
-            </div>
-          )}
-
-          {messages.map((message) => (
-            <div key={message.id} className={`${message.sender === 'user' ? 'ml-auto max-w-2xl' : 'mr-auto'}`}>
-              {message.sender === 'user' ? (
-                <div className="card-glow p-4 bg-gradient-to-r from-neon-green/10 to-neon-teal/10 border-neon-green/20">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-neon-green to-neon-teal rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-background font-semibold text-sm">You</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-foreground">{message.content}</p>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        {message.timestamp.toLocaleTimeString()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="card-glow p-4 border-border/20">
-                  <div className="flex items-start gap-3">
-                    <div className={`w-8 h-8 bg-gradient-to-br from-${getModelColor(message.model!)} to-${getModelColor(message.model!)}/60 rounded-full flex items-center justify-center flex-shrink-0`}>
-                      {(() => {
-                        const Icon = getModelIcon(message.model!);
-                        return <Icon className="w-4 h-4 text-background" />;
-                      })()}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`font-semibold text-${getModelColor(message.model!)}`}>
-                          {message.model}
-                        </span>
-                      </div>
-                      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{message.content}</p>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        {message.timestamp.toLocaleTimeString()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-
-          {loading && (
-            <div className="grid gap-4">
-              {aiModels.map((model) => (
-                <div key={model.name} className="card-glow p-4 border-border/20">
-                  <div className="flex items-start gap-3">
-                    <div className={`w-8 h-8 bg-gradient-to-br from-${model.color} to-${model.color}/60 rounded-full flex items-center justify-center flex-shrink-0`}>
-                      <model.icon className="w-4 h-4 text-background" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`font-semibold text-${model.color}`}>{model.name}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" />
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                        <span className="text-muted-foreground text-sm">Thinking...</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          
-          <div ref={messagesEndRef} />
-        </div>
-      </ScrollArea>
-
-      {/* Input */}
-      <div className="border-t border-border/20 bg-surface-primary/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex gap-4 max-w-4xl mx-auto">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Ask all 8 AIs anything..."
-              disabled={loading}
-              className="flex-1 bg-surface-secondary border-border/30 text-foreground placeholder:text-muted-foreground"
-            />
+      {/* Model Settings Panel */}
+      {showModelSettings && (
+        <div className="p-4 bg-surface-secondary border-b border-border/20">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold">AI Model Selection</h3>
             <Button 
-              onClick={handleSendMessage} 
-              disabled={loading || !input.trim()}
-              className="btn-hero px-6"
+              variant="ghost" 
+              size="sm"
+              onClick={() => setShowModelSettings(false)}
             >
-              <Send className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </Button>
           </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {models.map((model) => (
+              <div key={model.id} className="flex items-center justify-between p-3 bg-surface-primary rounded-lg">
+                <div className="flex items-center gap-2">
+                  <div className={`w-3 h-3 rounded-full ${model.color}`} />
+                  <Label htmlFor={model.id} className="text-sm font-medium">
+                    {model.name}
+                  </Label>
+                </div>
+                <Switch
+                  id={model.id}
+                  checked={model.enabled}
+                  onCheckedChange={() => toggleModel(model.id)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Chat Area - Multi-column layout like the image */}
+      <div className="flex-1 flex">
+        {enabledModels.length > 0 ? (
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1">
+            {enabledModels.map((model) => (
+              <div key={model.id} className="flex flex-col bg-surface-secondary/30">
+                {/* Model Header */}
+                <div className={`p-3 border-b border-border/20 ${model.color.replace('bg-', 'bg-')}/20`}>
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${model.color}`} />
+                    <span className="font-medium text-sm text-foreground">{model.name}</span>
+                    {model.isLoading && (
+                      <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />
+                    )}
+                  </div>
+                </div>
+
+                {/* Model Messages */}
+                <ScrollArea className="flex-1 p-3" ref={scrollRef}>
+                  <div className="space-y-3">
+                    {messages.map((msg) => (
+                      <div key={`${model.id}-${msg.id}`} className="space-y-2">
+                        {/* User message */}
+                        <div className="bg-surface-primary/60 p-3 rounded-lg text-sm border border-border/10">
+                          <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                            <div className="w-2 h-2 rounded-full bg-neon-green" />
+                            You
+                          </div>
+                          <div className="text-foreground">{msg.message}</div>
+                        </div>
+
+                        {/* AI Response */}
+                        {msg.responses[model.id] ? (
+                          <div className={`bg-surface-primary/80 p-3 rounded-lg text-sm border ${model.color.replace('bg-', 'border-')}/20`}>
+                            <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                              <div className={`w-2 h-2 rounded-full ${model.color}`} />
+                              {model.name}
+                            </div>
+                            <div className="whitespace-pre-wrap text-foreground leading-relaxed text-xs">
+                              {msg.responses[model.id].length > 300 
+                                ? `${msg.responses[model.id].substring(0, 300)}...`
+                                : msg.responses[model.id]
+                              }
+                            </div>
+                            {msg.responses[model.id].length > 300 && (
+                              <div className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+                                <ChevronRight className="w-3 h-3" />
+                                continues...
+                              </div>
+                            )}
+                          </div>
+                        ) : model.enabled && model.isLoading ? (
+                          <div className="bg-surface-primary/50 p-3 rounded-lg text-sm">
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                              <span className="text-xs">Thinking...</span>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex-1 flex items-center justify-center">
+            <Card className="p-8 text-center max-w-md">
+              <Brain className="w-12 h-12 text-neon-green mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No AI Models Selected</h3>
+              <p className="text-muted-foreground mb-4">
+                Enable at least one AI model to start chatting
+              </p>
+              <Button onClick={() => setShowModelSettings(true)}>
+                <Settings className="w-4 h-4 mr-2" />
+                Select Models
+              </Button>
+            </Card>
+          </div>
+        )}
+      </div>
+
+      {/* Input Area */}
+      <div className="p-4 border-t border-border/20 bg-surface-secondary/50">
+        <div className="flex gap-2 max-w-4xl mx-auto">
+          <Input
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="Ask me anything..."
+            className="flex-1 bg-surface-primary border-border/30 focus:border-neon-green"
+            onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+            disabled={enabledModels.length === 0}
+          />
+          <Button 
+            onClick={handleSendMessage}
+            disabled={!inputMessage.trim() || enabledModels.length === 0}
+            className="btn-hero px-6"
+          >
+            <Send className="w-4 h-4" />
+          </Button>
+        </div>
+        
+        <div className="text-center mt-2 text-xs text-muted-foreground">
+          {enabledModels.length > 0 
+            ? `${enabledModels.length} AI models will respond to your message`
+            : "Select AI models to start chatting"
+          }
         </div>
       </div>
     </div>
