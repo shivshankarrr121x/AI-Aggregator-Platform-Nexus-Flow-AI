@@ -86,7 +86,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
 
   const callGemini = async (message: string): Promise<string> => {
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyDEfG_RM_InBxAEoh0g1Qv2PyJS0MPoVH4`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDEfG_RM_InBxAEoh0g1Qv2PyJS0MPoVH4`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,9 +113,9 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
     try {
       const modelMap: { [key: string]: string } = {
         'Claude': 'anthropic/claude-3-haiku',
-        'Perplexity': 'perplexity/llama-3.1-sonar-small-128k-online',
-        'Grok': 'x-ai/grok-beta',
-        'Meta AI': 'meta-llama/llama-3.1-8b-instruct:free',
+        'Perplexity': 'perplexity/llama-3.1-sonar-large-128k-online',
+        'Grok': 'x-ai/grok-2-1212',
+        'Meta AI': 'meta-llama/llama-3.2-3b-instruct:free',
         'Copilot': 'microsoft/wizardlm-2-8x22b',
         'DeepSeek': 'deepseek/deepseek-chat'
       };
@@ -303,17 +303,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
                                 {model.name}
                               </div>
                               <div className="whitespace-pre-wrap text-foreground leading-relaxed text-xs">
-                                {msg.responses[model.id].length > 300 
-                                  ? `${msg.responses[model.id].substring(0, 300)}...`
-                                  : msg.responses[model.id]
-                                }
+                                {msg.responses[model.id]}
                               </div>
-                              {msg.responses[model.id].length > 300 && (
-                                <div className="text-xs text-muted-foreground mt-2 flex items-center gap-1 cursor-pointer hover:text-neon-green">
-                                  <ChevronRight className="w-3 h-3" />
-                                  continues...
-                                </div>
-                              )}
                             </div>
                           ) : model.enabled && model.isLoading ? (
                             <div className="bg-surface-primary/50 p-3 rounded-lg text-sm">
