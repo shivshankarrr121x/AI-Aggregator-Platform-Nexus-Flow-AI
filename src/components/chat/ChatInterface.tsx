@@ -28,10 +28,10 @@ const INITIAL_MODELS: AIModel[] = [
   { id: "claude", name: "Claude", color: "bg-orange-500", enabled: true },
   { id: "gemini", name: "Gemini Pro", color: "bg-blue-500", enabled: true },
   { id: "perplexity", name: "Perplexity", color: "bg-cyan-500", enabled: true },
-  { id: "grok", name: "Grok", color: "bg-purple-500", enabled: false },
-  { id: "meta-ai", name: "Meta AI", color: "bg-blue-600", enabled: false },
-  { id: "copilot", name: "Copilot", color: "bg-indigo-500", enabled: false },
-  { id: "deepseek", name: "DeepSeek", color: "bg-teal-500", enabled: false }
+  { id: "grok", name: "Grok", color: "bg-purple-500", enabled: true },
+  { id: "meta-ai", name: "Meta AI", color: "bg-blue-600", enabled: true },
+  { id: "copilot", name: "Copilot", color: "bg-indigo-500", enabled: true },
+  { id: "deepseek", name: "DeepSeek", color: "bg-teal-500", enabled: true }
 ];
 
 interface ChatInterfaceProps {
@@ -263,71 +263,73 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         </div>
       )}
 
-      {/* Chat Area - Multi-column layout like the image */}
-      <div className="flex-1 flex">
+      {/* Chat Area - All 8 AIs side by side */}
+      <div className="flex-1 flex overflow-hidden">
         {enabledModels.length > 0 ? (
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1">
-            {enabledModels.map((model) => (
-              <div key={model.id} className="flex flex-col bg-surface-secondary/30">
-                {/* Model Header */}
-                <div className={`p-3 border-b border-border/20 ${model.color.replace('bg-', 'bg-')}/20`}>
-                  <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full ${model.color}`} />
-                    <span className="font-medium text-sm text-foreground">{model.name}</span>
-                    {model.isLoading && (
-                      <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />
-                    )}
+          <div className="flex-1 flex overflow-x-auto">
+            <div className="flex min-w-max">
+              {enabledModels.map((model, index) => (
+                <div key={model.id} className="w-80 flex-shrink-0 flex flex-col bg-surface-secondary/30 border-r border-border/10">
+                  {/* Model Header */}
+                  <div className={`p-3 border-b border-border/20 ${model.color.replace('bg-', 'bg-')}/20`}>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-3 h-3 rounded-full ${model.color}`} />
+                      <span className="font-medium text-sm text-foreground">{model.name}</span>
+                      {model.isLoading && (
+                        <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Model Messages */}
-                <ScrollArea className="flex-1 p-3" ref={scrollRef}>
-                  <div className="space-y-3">
-                    {messages.map((msg) => (
-                      <div key={`${model.id}-${msg.id}`} className="space-y-2">
-                        {/* User message */}
-                        <div className="bg-surface-primary/60 p-3 rounded-lg text-sm border border-border/10">
-                          <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
-                            <div className="w-2 h-2 rounded-full bg-neon-green" />
-                            You
+                  {/* Model Messages */}
+                  <ScrollArea className="flex-1 p-3" ref={scrollRef}>
+                    <div className="space-y-3">
+                      {messages.map((msg) => (
+                        <div key={`${model.id}-${msg.id}`} className="space-y-2">
+                          {/* User message */}
+                          <div className="bg-surface-primary/60 p-3 rounded-lg text-sm border border-border/10">
+                            <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                              <div className="w-2 h-2 rounded-full bg-neon-green" />
+                              You
+                            </div>
+                            <div className="text-foreground">{msg.message}</div>
                           </div>
-                          <div className="text-foreground">{msg.message}</div>
-                        </div>
 
-                        {/* AI Response */}
-                        {msg.responses[model.id] ? (
-                          <div className={`bg-surface-primary/80 p-3 rounded-lg text-sm border ${model.color.replace('bg-', 'border-')}/20`}>
-                            <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                              <div className={`w-2 h-2 rounded-full ${model.color}`} />
-                              {model.name}
-                            </div>
-                            <div className="whitespace-pre-wrap text-foreground leading-relaxed text-xs">
-                              {msg.responses[model.id].length > 300 
-                                ? `${msg.responses[model.id].substring(0, 300)}...`
-                                : msg.responses[model.id]
-                              }
-                            </div>
-                            {msg.responses[model.id].length > 300 && (
-                              <div className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-                                <ChevronRight className="w-3 h-3" />
-                                continues...
+                          {/* AI Response */}
+                          {msg.responses[model.id] ? (
+                            <div className={`bg-surface-primary/80 p-3 rounded-lg text-sm border ${model.color.replace('bg-', 'border-')}/20`}>
+                              <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                                <div className={`w-2 h-2 rounded-full ${model.color}`} />
+                                {model.name}
                               </div>
-                            )}
-                          </div>
-                        ) : model.enabled && model.isLoading ? (
-                          <div className="bg-surface-primary/50 p-3 rounded-lg text-sm">
-                            <div className="flex items-center gap-2 text-muted-foreground">
-                              <Loader2 className="w-3 h-3 animate-spin" />
-                              <span className="text-xs">Thinking...</span>
+                              <div className="whitespace-pre-wrap text-foreground leading-relaxed text-xs">
+                                {msg.responses[model.id].length > 300 
+                                  ? `${msg.responses[model.id].substring(0, 300)}...`
+                                  : msg.responses[model.id]
+                                }
+                              </div>
+                              {msg.responses[model.id].length > 300 && (
+                                <div className="text-xs text-muted-foreground mt-2 flex items-center gap-1 cursor-pointer hover:text-neon-green">
+                                  <ChevronRight className="w-3 h-3" />
+                                  continues...
+                                </div>
+                              )}
                             </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-              </div>
-            ))}
+                          ) : model.enabled && model.isLoading ? (
+                            <div className="bg-surface-primary/50 p-3 rounded-lg text-sm">
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                                <span className="text-xs">Thinking...</span>
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <div className="flex-1 flex items-center justify-center">
