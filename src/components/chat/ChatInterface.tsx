@@ -202,7 +202,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   return (
     <div className="fixed inset-0 bg-surface-primary flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border/20">
+      <div className="flex items-center justify-between p-4 border-b border-border/20 flex-shrink-0">
         <div className="flex items-center gap-4">
           <Button onClick={onBack} variant="ghost" className="p-2">
             <ArrowLeft className="w-5 h-5" />
@@ -231,7 +231,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
 
       {/* Model Settings Panel */}
       {showModelSettings && (
-        <div className="p-4 bg-surface-secondary border-b border-border/20">
+        <div className="p-4 bg-surface-secondary border-b border-border/20 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold">AI Model Selection</h3>
             <Button 
@@ -264,14 +264,14 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       )}
 
       {/* Chat Area - All 8 AIs side by side */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden min-h-0">
         {enabledModels.length > 0 ? (
           <div className="flex-1 flex overflow-x-auto">
-            <div className="flex min-w-max">
+            <div className="flex min-w-max h-full">
               {enabledModels.map((model, index) => (
-                <div key={model.id} className="w-80 flex-shrink-0 flex flex-col bg-surface-secondary/30 border-r border-border/10">
+                <div key={model.id} className="w-80 flex-shrink-0 flex flex-col bg-surface-secondary/30 border-r border-border/10 h-full">
                   {/* Model Header */}
-                  <div className={`p-3 border-b border-border/20 ${model.color.replace('bg-', 'bg-')}/20`}>
+                  <div className={`p-3 border-b border-border/20 ${model.color.replace('bg-', 'bg-')}/20 flex-shrink-0`}>
                     <div className="flex items-center gap-2">
                       <div className={`w-3 h-3 rounded-full ${model.color}`} />
                       <span className="font-medium text-sm text-foreground">{model.name}</span>
@@ -282,7 +282,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
                   </div>
 
                   {/* Model Messages */}
-                  <ScrollArea className="flex-1 p-3" ref={scrollRef}>
+                  <div className="flex-1 overflow-y-auto p-3 min-h-0">
                     <div className="space-y-3">
                       {messages.map((msg) => (
                         <div key={`${model.id}-${msg.id}`} className="space-y-2">
@@ -326,7 +326,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
                         </div>
                       ))}
                     </div>
-                  </ScrollArea>
+                  </div>
                 </div>
               ))}
             </div>
@@ -348,8 +348,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         )}
       </div>
 
-      {/* Input Area */}
-      <div className="p-4 border-t border-border/20 bg-surface-secondary/50">
+      {/* Fixed Input Area */}
+      <div className="p-4 border-t border-border/20 bg-surface-secondary/50 flex-shrink-0">
         <div className="flex gap-2 max-w-4xl mx-auto">
           <Input
             value={inputMessage}
