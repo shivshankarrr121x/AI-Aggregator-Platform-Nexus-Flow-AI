@@ -4,11 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Brain, Send, Settings, X, ChevronRight, Loader2, ArrowLeft, LogOut, Users } from "lucide-react";
+import { Brain, Send, Settings, X, ChevronRight, Loader2, ArrowLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { useAuth } from "@/contexts/AuthContext";
-import { Link } from "react-router-dom";
 
 interface AIModel {
   id: string;
@@ -46,13 +44,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   const [inputMessage, setInputMessage] = useState("");
   const [showModelSettings, setShowModelSettings] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { user, signOut } = useAuth();
 
   const enabledModels = models.filter(m => m.enabled);
-
-  const handleSignOut = async () => {
-    await signOut();
-  };
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -225,38 +218,15 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
           </div>
         </div>
         
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">
-            Welcome, {user?.email}
-          </span>
-          
-          <Link to="/users">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-neon-green">
-              <Users className="w-4 h-4 mr-2" />
-              Users
-            </Button>
-          </Link>
-          
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setShowModelSettings(!showModelSettings)}
-            className="border-border/30"
-          >
-            <Settings className="w-4 h-4 mr-2" />
-            Models ({enabledModels.length})
-          </Button>
-          
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={handleSignOut}
-            className="text-muted-foreground hover:text-red-400"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
-        </div>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => setShowModelSettings(!showModelSettings)}
+          className="border-border/30"
+        >
+          <Settings className="w-4 h-4 mr-2" />
+          Models ({enabledModels.length})
+        </Button>
       </div>
 
       {/* Model Settings Panel */}
