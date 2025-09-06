@@ -3,9 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Brain, ArrowLeft, Eye, EyeOff, Check } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 export const Signup = () => {
   const [formData, setFormData] = useState({
@@ -17,69 +15,20 @@ export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Password Mismatch",
-        description: "Passwords don't match!",
-        variant: "destructive",
-      });
+      alert("Passwords don't match!");
       return;
     }
-
-    if (formData.password.length < 6) {
-      toast({
-        title: "Weak Password",
-        description: "Password must be at least 6 characters long",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.name,
-          }
-        }
-      });
-
-      if (error) {
-        toast({
-          title: "Signup Failed",
-          description: error.message,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (data.user) {
-        toast({
-          title: "Account Created!",
-          description: "Please check your email to verify your account",
-        });
-        // Redirect to login page for email verification
-        navigate("/login");
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
-      });
-    } finally {
+    // Simulate signup process
+    setTimeout(() => {
       setIsLoading(false);
-    }
+      // Redirect to chat interface
+      window.location.href = "/";
+    }, 2000);
   };
 
   const updateField = (field: string, value: string) => {
