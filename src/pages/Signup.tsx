@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Brain, ArrowLeft, Eye, EyeOff, Check } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 export const Signup = () => {
   const [formData, setFormData] = useState({
@@ -15,20 +17,32 @@ export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
+      toast.error("Passwords don't match!");
       return;
     }
     setIsLoading(true);
-    // Simulate signup process
-    setTimeout(() => {
+    
+    try {
+      const { error } = await signUp(formData.email, formData.password, formData.name);
+      
+      if (error) {
+        toast.error(error.message || "Failed to create account");
+        setIsLoading(false);
+        return;
+      }
+      
+      toast.success("Account created! Please check your email to verify your account.");
+      navigate("/login");
+    } catch (err) {
+      toast.error("An unexpected error occurred");
       setIsLoading(false);
-      // Redirect to chat interface
-      window.location.href = "/";
-    }, 2000);
+    }
   };
 
   const updateField = (field: string, value: string) => {

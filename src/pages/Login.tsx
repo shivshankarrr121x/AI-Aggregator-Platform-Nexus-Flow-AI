@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Brain, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,16 +13,27 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Redirect to chat interface
+    
+    try {
+      const { error } = await signIn(email, password);
+      
+      if (error) {
+        toast.error(error.message || "Failed to sign in");
+        setIsLoading(false);
+        return;
+      }
+      
+      toast.success("Successfully signed in!");
       navigate("/chat");
-    }, 2000);
+    } catch (err) {
+      toast.error("An unexpected error occurred");
+      setIsLoading(false);
+    }
   };
 
   return (
