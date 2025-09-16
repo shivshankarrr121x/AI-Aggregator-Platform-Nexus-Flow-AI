@@ -22,18 +22,18 @@ export const EfficiencySection = () => {
           {/* Left: Comparison Table */}
           <div className="card-glow">
             <h3 className="text-2xl font-semibold mb-6 text-center text-neon-green">
-              Traditional vs Multi AI Prompt Tool
+              Traditional vs Nexus Flow AI 
             </h3>
             
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-surface-secondary/50">
                 <div className="text-sm text-muted-foreground">Traditional Approach</div>
-                <div className="text-sm text-foreground font-semibold">Multi AI Prompt Tool</div>
+                <div className="text-sm text-foreground font-semibold">Nexus Flow AI</div>
               </div>
               
               {[
                 { traditional: "8 separate subscriptions", thanos: "1 unified platform" },
-                { traditional: "₹3000+/month total cost", thanos: "₹999/year only" },
+                { traditional: "₹10000+/month total cost", thanos: "₹6999/year only" },
                 { traditional: "Switch between apps", thanos: "Compare side-by-side" },
                 { traditional: "Miss better answers", thanos: "Get all perspectives" },
                 { traditional: "Manage multiple accounts", thanos: "Single dashboard" }
@@ -66,7 +66,7 @@ export const EfficiencySection = () => {
               <div className="text-3xl font-bold text-neon-teal mb-2">99%</div>
               <div className="text-lg font-semibold mb-2">Cost Savings</div>
               <div className="text-muted-foreground">
-                Pay ₹999/year instead of ₹3000+/month for premium AI access
+                Pay ₹6999/year instead of ₹10000+/month for premium AI access
               </div>
             </div>
             
