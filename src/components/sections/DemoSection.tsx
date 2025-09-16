@@ -8,7 +8,7 @@ export const DemoSection = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
             <span className="text-foreground">See How </span>
-            <span className="text-neon">Multi AI Prompt Tool</span>
+            <span className="text-neon">Nexus Flow AI</span>
             <br />
             <span className="text-foreground">Delivers What Others Miss</span>
           </h2>
