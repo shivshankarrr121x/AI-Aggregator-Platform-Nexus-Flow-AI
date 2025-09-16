@@ -12,7 +12,7 @@ export const PricingSection = () => {
             <span className="text-foreground">of One</span>
           </h2>
           <p className="text-xl text-muted-foreground">
-            Why pay ₹3000+ monthly for individual AI subscriptions when you can get them all?
+            Why pay ₹10000+ monthly for individual AI subscriptions when you can get them all?
           </p>
         </div>
 
@@ -26,7 +26,7 @@ export const PricingSection = () => {
             <div className="p-8">
               <h3 className="text-2xl font-bold mb-2">Monthly Plan</h3>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-neon-green">₹99</span>
+                <span className="text-4xl font-bold text-neon-green">₹699</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
               
@@ -49,7 +49,7 @@ export const PricingSection = () => {
               </ul>
               
               <Button className="w-full btn-hero">
-                Get Started - ₹99/month
+                Get Started - ₹699/month
               </Button>
             </div>
           </div>
@@ -64,10 +64,10 @@ export const PricingSection = () => {
             <div className="p-8">
               <h3 className="text-2xl font-bold mb-2">Yearly Plan</h3>
               <div className="mb-2">
-                <span className="text-4xl font-bold text-neon-purple">₹999</span>
+                <span className="text-4xl font-bold text-neon-purple">₹6999</span>
                 <span className="text-muted-foreground">/year</span>
               </div>
-              <div className="text-sm text-neon-green mb-6">Save 17% • Just ₹83/month</div>
+              <div className="text-sm text-neon-green mb-6"> • Just ₹583/month</div>
               
               <ul className="space-y-3 mb-8">
                 {[
@@ -88,7 +88,7 @@ export const PricingSection = () => {
               </ul>
               
               <Button className="w-full bg-gradient-to-r from-neon-purple to-neon-blue text-background font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105">
-                Get Started - ₹999/year
+                Get Started - ₹6999/year
               </Button>
             </div>
           </div>
