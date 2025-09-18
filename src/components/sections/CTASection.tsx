@@ -22,7 +22,7 @@ export const CTASection = ({ onGetStarted }: CTASectionProps) => {
           <h2 className="text-5xl lg:text-6xl font-bold mb-8 leading-tight">
             <span className="text-foreground">Ready to Unleash</span>
             <br />
-            <span className="text-neon">the Power of Multi AI Prompt Tool?</span>
+            <span className="text-neon">the Power of Nexus Flow AI?</span>
           </h2>
           
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -69,8 +69,8 @@ export const CTASection = ({ onGetStarted }: CTASectionProps) => {
             
             <div className="text-center">
               <div className="text-sm text-muted-foreground">Starting at</div>
-              <div className="text-2xl font-bold text-neon-green">₹999/year</div>
-              <div className="text-sm text-muted-foreground">That's just ₹83/month</div>
+              <div className="text-2xl font-bold text-neon-green">₹6999/year</div>
+              <div className="text-sm text-muted-foreground">That's just ₹583/month</div>
             </div>
           </div>
           
