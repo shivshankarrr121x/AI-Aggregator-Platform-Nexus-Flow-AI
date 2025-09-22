@@ -123,7 +123,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
