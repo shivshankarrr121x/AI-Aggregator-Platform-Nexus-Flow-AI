@@ -65,7 +65,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
