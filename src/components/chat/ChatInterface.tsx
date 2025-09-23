@@ -117,7 +117,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         'Grok': 'x-ai/grok-3-mini',
         'Meta AI': 'meta-llama/llama-3.3-8b-instruct:free',
         'Copilot': 'microsoft/phi-3.5-mini-128k-instruct',
-        'Mistral: 'mistralai/mistral-small-3.2-24b-instruct:free'
+        'Mistral: 'mistralai/mistral-small-3.2-24b-instruct:free',
         'deepseek/deepseek-r1-distill-llama-70b:free'
       };
 
