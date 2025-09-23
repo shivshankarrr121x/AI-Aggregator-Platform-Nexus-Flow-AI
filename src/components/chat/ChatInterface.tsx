@@ -112,12 +112,12 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   const callOpenRouter = async (message: string, model: string): Promise<string> => {
     try {
       const modelMap: { [key: string]: string } = {
-        'Claude': 'anthropic/claude-3-haiku',
-        'Perplexity': 'perplexity/llama-3.1-sonar-large-128k-online',
-        'Grok': 'x-ai/grok-2-1212',
-        'Meta AI': 'meta-llama/llama-3.2-3b-instruct:free',
-        'Copilot': 'microsoft/wizardlm-2-8x22b',
-        'DeepSeek': 'deepseek/deepseek-chat'
+        'Claude': 'anthropic/claude-opus-4.1',
+        'Perplexity': 'perplexity/sonar-reasoning-pro',
+        'Grok': 'x-ai/grok-4-fast:free',
+        'Meta AI': 'meta-llama/llama-3.3-8b-instruct:free',
+        'Copilot': 'microsoft/phi-3.5-mini-128k-instruct',
+        'deepseek/deepseek-r1-distill-llama-70b:free'
       };
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -212,7 +212,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
               <Brain className="w-5 h-5 text-background" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-neon">Multi AI Prompt Tool</h1>
+              <h1 className="text-lg font-bold text-neon">Nexus Flow AI</h1>
               <p className="text-sm text-muted-foreground">{enabledModels.length} of 8 AIs active</p>
             </div>
           </div>
