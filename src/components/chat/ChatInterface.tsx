@@ -113,10 +113,11 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
     try {
       const modelMap: { [key: string]: string } = {
         'Claude': 'anthropic/claude-opus-4.1',
-        'Perplexity': 'perplexity/sonar-reasoning-pro',
-        'Grok': 'x-ai/grok-code-fast-1',
+        'Perplexity': 'perplexity/sonar',
+        'Grok': 'x-ai/grok-3-mini',
         'Meta AI': 'meta-llama/llama-3.3-8b-instruct:free',
         'Copilot': 'microsoft/phi-3.5-mini-128k-instruct',
+        'Mistral: 'mistralai/mistral-small-3.2-24b-instruct:free'
         'deepseek/deepseek-r1-distill-llama-70b:free'
       };
 
