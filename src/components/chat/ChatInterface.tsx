@@ -114,7 +114,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       const modelMap: { [key: string]: string } = {
         'Claude': 'anthropic/claude-opus-4.1',
         'Perplexity': 'perplexity/sonar-reasoning-pro',
-        'Grok': 'x-ai/grok-4-fast:free',
+        'Grok': 'x-ai/grok-code-fast-1',
         'Meta AI': 'meta-llama/llama-3.3-8b-instruct:free',
         'Copilot': 'microsoft/phi-3.5-mini-128k-instruct',
         'deepseek/deepseek-r1-distill-llama-70b:free'
@@ -129,7 +129,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         body: JSON.stringify({
           model: modelMap[model] || 'deepseek/deepseek-chat',
           messages: [{ role: 'user', content: message }],
-          max_tokens: 1000
+          max_tokens: 10000
         }),
       });
 
