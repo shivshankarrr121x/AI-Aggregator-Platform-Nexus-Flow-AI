@@ -27,7 +27,7 @@ const INITIAL_MODELS: AIModel[] = [
   { id: "gpt-4", name: "GPT-4", color: "bg-green-500", enabled: true },
   { id: "claude", name: "Claude", color: "bg-orange-500", enabled: true },
   { id: "gemini", name: "Gemini Pro", color: "bg-blue-500", enabled: true },
-  { id: "perplexity", name: "Perplexity", color: "bg-cyan-500", enabled: true },
+  { id: "perplexity", name: "Perplexity: Sonar Reasoning Pro", color: "bg-cyan-500", enabled: true },
   { id: "grok", name: "Grok", color: "bg-purple-500", enabled: true },
   { id: "meta-ai", name: "Meta AI", color: "bg-blue-600", enabled: true },
   { id: "copilot", name: "Copilot", color: "bg-indigo-500", enabled: true },
@@ -113,7 +113,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
     try {
       const modelMap: { [key: string]: string } = {
         'Claude': 'anthropic/claude-opus-4.1',
-        'Perplexity': 'perplexity/sonar',
+        'Perplexity: Sonar Reasoning Pro': 'perplexity/sonar-reasoning-pro',
         'Grok': 'x-ai/grok-3-mini',
         'Meta AI': 'meta-llama/llama-3.3-8b-instruct:free',
         'Copilot': 'microsoft/phi-3.5-mini-128k-instruct',
