@@ -62,14 +62,14 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   // API calling functions from the original code
   const callOpenAI = async (message: string): Promise<string> => {
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completion', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
+          model: 'openai/gpt-5-chat',
           messages: [{ role: 'user', content: message }],
           max_tokens: 1000
         }),
