@@ -117,7 +117,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         'Grok': 'x-ai/grok-3-mini',
         'Meta AI': 'meta-llama/llama-3.3-8b-instruct:free',
         'Copilot': 'microsoft/phi-3.5-mini-128k-instruct',
-        'deepseek/deepseek-r1-distill-llama-70b:free'
+        'deepseek/
+deepseek-r1-distill-llama-70b:free'
       };
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
