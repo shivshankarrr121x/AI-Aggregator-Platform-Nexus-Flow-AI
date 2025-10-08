@@ -22,12 +22,12 @@ export const CTASection = ({ onGetStarted }: CTASectionProps) => {
           <h2 className="text-5xl lg:text-6xl font-bold mb-8 leading-tight">
             <span className="text-foreground">Ready to Unleash</span>
             <br />
-            <span className="text-neon">the Power of Multi AI Prompt Tool?</span>
+            <span className="text-neon">the Power of Nexus Flow AI?</span>
           </h2>
           
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
             Join thousands of users who've already discovered the power of having all premium AIs 
-            in one platform. Start your journey to superhuman productivity today.
+            in one platform - absolutely free with unlimited usage. Start your journey today.
           </p>
           
           {/* Benefits grid */}
@@ -44,8 +44,8 @@ export const CTASection = ({ onGetStarted }: CTASectionProps) => {
               <div className="w-16 h-16 bg-gradient-to-br from-neon-purple to-neon-blue rounded-2xl flex items-center justify-center mb-4">
                 <Shield className="w-8 h-8 text-background" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">30-Day Guarantee</h3>
-              <p className="text-muted-foreground">Try risk-free with our money-back guarantee.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Money-Back Promise</h3>
+              <p className="text-muted-foreground">100% satisfaction guaranteed with our platform.</p>
             </div>
             
             <div className="flex flex-col items-center text-center">
@@ -63,34 +63,34 @@ export const CTASection = ({ onGetStarted }: CTASectionProps) => {
               onClick={onGetStarted}
               className="btn-hero group text-xl px-12 py-6"
             >
-              Get Started Now
+              Get Started - It's Free!
               <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
             </Button>
             
-            <div className="text-center">
-              <div className="text-sm text-muted-foreground">Starting at</div>
-              <div className="text-2xl font-bold text-neon-green">₹999/year</div>
-              <div className="text-sm text-muted-foreground">That's just ₹83/month</div>
+            <div className="text-center card-glow px-6 py-4">
+              <div className="text-sm text-muted-foreground">Forever</div>
+              <div className="text-3xl font-bold text-neon-green">₹0</div>
+              <div className="text-sm text-neon-purple">Unlimited usage</div>
             </div>
           </div>
           
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center items-center gap-8 mt-12 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-neon-green rounded-full"></div>
+              <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
+              <span>100% Free Forever</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-neon-purple rounded-full animate-pulse"></div>
               <span>No Credit Card Required</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-neon-purple rounded-full"></div>
-              <span>Instant Access</span>
+              <div className="w-2 h-2 bg-neon-teal rounded-full animate-pulse"></div>
+              <span>Unlimited Usage</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-neon-teal rounded-full"></div>
-              <span>Cancel Anytime</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-neon-blue rounded-full"></div>
-              <span>Trusted by 10,000+ Users</span>
+              <div className="w-2 h-2 bg-neon-blue rounded-full animate-pulse"></div>
+              <span>8 Premium AI Models</span>
             </div>
           </div>
         </div>

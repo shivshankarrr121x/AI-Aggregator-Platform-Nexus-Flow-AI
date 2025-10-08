@@ -28,7 +28,7 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
             
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
               <span className="text-neon bg-gradient-to-r from-neon-green via-neon-teal to-neon-purple bg-clip-text text-transparent">
-                Multi AI Prompt Tool
+                Nexus Flow AI
               </span>
               <br />
               <span className="text-foreground">One Platform.</span>
@@ -37,8 +37,8 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl">
-              Many Premium AIs. One Subscription. Compare GPT, Claude, Gemini & more instantly. 
-              Get superhuman results at a fraction of the cost.
+              8 Premium AIs. Absolutely Free. Unlimited Usage. Compare GPT, Claude, Gemini & more instantly. 
+              Get superhuman results without spending a penny.
             </p>
           </div>
           
@@ -68,7 +68,7 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           <div className="relative rounded-2xl overflow-hidden">
             <img 
               src={heroInterface} 
-              alt="Multi AI Prompt Tool Interface" 
+              alt="Nexus Flow AI Interface" 
               className="w-full h-auto rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface-primary/20 to-transparent rounded-2xl" />
@@ -81,8 +81,8 @@ export const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           </div>
           
           <div className="absolute -bottom-4 -left-4 card-glow p-4 animate-float" style={{ animationDelay: '2s' }}>
-            <div className="text-2xl font-bold text-neon-purple">₹99/month</div>
-            <div className="text-sm text-muted-foreground">Premium Access</div>
+            <div className="text-2xl font-bold text-neon-purple">100% Free</div>
+            <div className="text-sm text-muted-foreground">Unlimited Usage</div>
           </div>
         </div>
       </div>

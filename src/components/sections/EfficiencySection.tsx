@@ -22,21 +22,21 @@ export const EfficiencySection = () => {
           {/* Left: Comparison Table */}
           <div className="card-glow">
             <h3 className="text-2xl font-semibold mb-6 text-center text-neon-green">
-              Traditional vs Multi AI Prompt Tool
+              Traditional vs Nexus Flow AI
             </h3>
             
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-surface-secondary/50">
                 <div className="text-sm text-muted-foreground">Traditional Approach</div>
-                <div className="text-sm text-foreground font-semibold">Multi AI Prompt Tool</div>
+                <div className="text-sm text-foreground font-semibold">Nexus Flow AI</div>
               </div>
               
               {[
-                { traditional: "8 separate subscriptions", thanos: "1 unified platform" },
-                { traditional: "₹3000+/month total cost", thanos: "₹999/year only" },
-                { traditional: "Switch between apps", thanos: "Compare side-by-side" },
-                { traditional: "Miss better answers", thanos: "Get all perspectives" },
-                { traditional: "Manage multiple accounts", thanos: "Single dashboard" }
+                { traditional: "8 separate subscriptions", nexus: "1 unified platform - Free" },
+                { traditional: "₹3000+/month total cost", nexus: "₹0 - Completely free" },
+                { traditional: "Switch between apps", nexus: "Compare side-by-side" },
+                { traditional: "Miss better answers", nexus: "Get all perspectives" },
+                { traditional: "Manage multiple accounts", nexus: "Single dashboard" }
               ].map((row, index) => (
                 <div key={index} className="grid grid-cols-2 gap-4 p-3 rounded-lg hover:bg-surface-secondary/30 transition-colors">
                   <div className="text-sm text-red-400 flex items-center gap-2">
@@ -45,7 +45,7 @@ export const EfficiencySection = () => {
                   </div>
                   <div className="text-sm text-neon-green flex items-center gap-2">
                     <Check className="w-4 h-4" />
-                    {row.thanos}
+                    {row.nexus}
                   </div>
                 </div>
               ))}
@@ -63,10 +63,10 @@ export const EfficiencySection = () => {
             </div>
             
             <div className="card-glow">
-              <div className="text-3xl font-bold text-neon-teal mb-2">99%</div>
-              <div className="text-lg font-semibold mb-2">Cost Savings</div>
+              <div className="text-3xl font-bold text-neon-teal mb-2">100%</div>
+              <div className="text-lg font-semibold mb-2">Free Forever</div>
               <div className="text-muted-foreground">
-                Pay ₹999/year instead of ₹3000+/month for premium AI access
+                No subscriptions, no hidden costs. Unlimited usage with your own API keys
               </div>
             </div>
             

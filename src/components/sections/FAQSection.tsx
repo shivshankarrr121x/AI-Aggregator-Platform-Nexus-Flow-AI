@@ -7,28 +7,28 @@ import {
 
 const faqs = [
   {
-    question: "How much does Multi AI Prompt Tool cost?",
-    answer: "We offer incredibly affordable pricing: ₹99/month or just ₹999/year (save 92%). This gives you access to all 8 premium AI models that would normally cost ₹3000+ per month if purchased separately."
+    question: "Is Nexus Flow AI really free?",
+    answer: "Yes! Nexus Flow AI is absolutely free to use with unlimited usage. We believe AI should be accessible to everyone. You'll need to provide your own API keys for the AI services, but our platform is completely free with no hidden fees or subscriptions."
   },
   {
     question: "Which AI models are included?",
-    answer: "You get access to GPT-4, Claude, Gemini Pro, Perplexity, Grok, Meta AI, Copilot, and DeepSeek. We're constantly adding new models as they become available, all included in your subscription."
+    answer: "You get access to 8 premium AI models including ChatGPT, Claude, Gemini Pro, Perplexity, Grok, Meta AI, Copilot, and DeepSeek. Simply add your API keys and start comparing responses instantly."
   },
   {
     question: "Are there any usage limits or message caps?",
-    answer: "No! Unlike other platforms that limit your usage, Multi AI Prompt Tool offers truly unlimited messages across all AI models. Chat as much as you want without worrying about hitting any caps."
+    answer: "No! Nexus Flow AI offers truly unlimited messages across all AI models. Your usage is only limited by your API key quotas from the AI providers themselves. Chat as much as you want without any restrictions from our platform."
   },
   {
     question: "How do I compare responses from different AIs?",
     answer: "Our unique interface shows responses from all AI models side-by-side in real-time. Simply ask your question once, and see how each AI interprets and answers it. Pick the best response or combine insights from multiple models."
   },
   {
-    question: "Do you offer refunds?",
-    answer: "Yes! We offer a 30-day money-back guarantee. If you're not completely satisfied with Multi AI Prompt Tool, we'll refund your payment, no questions asked."
+    question: "Do I need API keys for all 8 AI models?",
+    answer: "You can start with just one or two API keys and add more later. The platform works great even if you only have a few AI models configured. You can always add more API keys as you explore different AI capabilities."
   },
   {
     question: "How often do you add new AI models and features?",
-    answer: "We regularly update our platform with the latest AI models and features. Subscribers get automatic access to all new additions without any extra cost. We typically add new models within days of their public release."
+    answer: "We regularly update our platform with the latest AI models and features. All users get automatic access to all new additions at no cost. We typically add support for new models within days of their public release."
   }
 ];
 
@@ -43,7 +43,7 @@ export const FAQSection = () => {
             <span className="text-neon">Questions</span>
           </h2>
           <p className="text-xl text-muted-foreground">
-            Everything you need to know about Multi AI Prompt Tool
+            Everything you need to know about Nexus Flow AI
           </p>
         </div>
 
@@ -68,10 +68,10 @@ export const FAQSection = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="mailto:support@multiaiprompt.com" 
+              href="mailto:support@nexusflowai.com" 
               className="text-neon-green hover:text-neon-teal transition-colors"
             >
-              📧 support@multiaiprompt.com
+              📧 support@nexusflowai.com
             </a>
             <span className="hidden sm:block text-muted-foreground">|</span>
             <a 
