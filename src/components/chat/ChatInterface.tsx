@@ -24,7 +24,7 @@ interface ChatMessage {
 }
 
 const INITIAL_MODELS: AIModel[] = [
-  { id: "gpt-4", name: "GPT-4", color: "bg-green-500", enabled: true },
+  { id: "gpt-4", name: "ChatGPT", color: "bg-green-500", enabled: true },
   { id: "claude", name: "Claude", color: "bg-orange-500", enabled: true },
   { id: "gemini", name: "Gemini Pro", color: "bg-blue-500", enabled: true },
   { id: "perplexity", name: "Perplexity", color: "bg-cyan-500", enabled: true },
@@ -59,34 +59,46 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
     ));
   };
 
-  // API calling functions from the original code
-  const callOpenAI = async (message: string): Promise<string> => {
+  // Get API keys from localStorage
+  const getApiKeys = () => {
+    const saved = localStorage.getItem("nexus_api_keys");
+    return saved ? JSON.parse(saved) : {};
+  };
+
+  // API calling functions
+  const callChatGPT = async (message: string): Promise<string> => {
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const apiKeys = getApiKeys();
+      const apiKey = apiKeys.chatgpt || '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';
+      
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
+          model: 'openai/gpt-4o-mini',
           messages: [{ role: 'user', content: message }],
           max_tokens: 1000
         }),
       });
 
-      if (!response.ok) throw new Error('OpenAI API failed');
+      if (!response.ok) throw new Error('ChatGPT API failed');
       
       const data = await response.json();
-      return data.choices[0]?.message?.content || 'No response from GPT-4';
+      return data.choices[0]?.message?.content || 'No response from ChatGPT';
     } catch (error) {
-      return `GPT-4 Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      return `ChatGPT Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   };
 
   const callGemini = async (message: string): Promise<string> => {
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDEfG_RM_InBxAEoh0g1Qv2PyJS0MPoVH4`, {
+      const apiKeys = getApiKeys();
+      const apiKey = apiKeys.gemini || 'AIzaSyDUlnVv0-iGdcPFCdGtePKf9UVZdUdv99s';
+      
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,36 +121,39 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
     }
   };
 
-  const callOpenRouter = async (message: string, model: string): Promise<string> => {
+  const callOpenRouter = async (message: string, modelName: string, modelKey: string): Promise<string> => {
     try {
+      const apiKeys = getApiKeys();
+      const apiKey = apiKeys[modelKey] || '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';
+      
       const modelMap: { [key: string]: string } = {
-        'Claude': 'anthropic/claude-3-haiku',
+        'Claude': 'anthropic/claude-3.5-sonnet',
         'Perplexity': 'perplexity/llama-3.1-sonar-large-128k-online',
         'Grok': 'x-ai/grok-2-1212',
-        'Meta AI': 'meta-llama/llama-3.2-3b-instruct:free',
-        'Copilot': 'microsoft/wizardlm-2-8x22b',
+        'Meta AI': 'meta-llama/llama-3.3-70b-instruct',
+        'Copilot': 'openai/gpt-4o-mini',
         'DeepSeek': 'deepseek/deepseek-chat'
       };
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: modelMap[model] || 'deepseek/deepseek-chat',
+          model: modelMap[modelName] || 'deepseek/deepseek-chat',
           messages: [{ role: 'user', content: message }],
           max_tokens: 1000
         }),
       });
 
-      if (!response.ok) throw new Error(`${model} API failed`);
+      if (!response.ok) throw new Error(`${modelName} API failed`);
       
       const data = await response.json();
-      return data.choices[0]?.message?.content || `No response from ${model}`;
+      return data.choices[0]?.message?.content || `No response from ${modelName}`;
     } catch (error) {
-      return `${model} Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      return `${modelName} Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   };
 
@@ -167,11 +182,21 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         let response = "";
         
         if (model.id === "gpt-4") {
-          response = await callOpenAI(inputMessage);
+          response = await callChatGPT(inputMessage);
         } else if (model.id === "gemini") {
           response = await callGemini(inputMessage);
-        } else {
-          response = await callOpenRouter(inputMessage, model.name);
+        } else if (model.id === "claude") {
+          response = await callOpenRouter(inputMessage, model.name, "claude");
+        } else if (model.id === "perplexity") {
+          response = await callOpenRouter(inputMessage, model.name, "perplexity");
+        } else if (model.id === "grok") {
+          response = await callOpenRouter(inputMessage, model.name, "grok");
+        } else if (model.id === "meta-ai") {
+          response = await callOpenRouter(inputMessage, model.name, "meta");
+        } else if (model.id === "copilot") {
+          response = await callOpenRouter(inputMessage, model.name, "copilot");
+        } else if (model.id === "deepseek") {
+          response = await callOpenRouter(inputMessage, model.name, "deepseek");
         }
 
         setMessages(prev => prev.map(msg => 
@@ -212,7 +237,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
               <Brain className="w-5 h-5 text-background" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-neon">Multi AI Prompt Tool</h1>
+              <h1 className="text-lg font-bold text-neon">Nexus Flow AI</h1>
               <p className="text-sm text-muted-foreground">{enabledModels.length} of 8 AIs active</p>
             </div>
           </div>

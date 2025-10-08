@@ -16,9 +16,9 @@ interface ApiKey {
 const API_KEYS: ApiKey[] = [
   {
     name: "chatgpt",
-    label: "ChatGPT API Key",
-    placeholder: "sk-...",
-    description: "OpenAI API key for ChatGPT (GPT-4)"
+    label: "ChatGPT API Key (OpenRouter)",
+    placeholder: "sk-or-...",
+    description: "OpenRouter API key for ChatGPT (GPT-4o-mini)"
   },
   {
     name: "gemini",
@@ -68,7 +68,19 @@ export const ApiKeysManager = () => {
   const { toast } = useToast();
   const [apiKeys, setApiKeys] = useState<Record<string, string>>(() => {
     const saved = localStorage.getItem("nexus_api_keys");
-    return saved ? JSON.parse(saved) : {};
+    if (saved) return JSON.parse(saved);
+    
+    // Set default API keys
+    return {
+      chatgpt: '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',
+      gemini: 'AIzaSyDUlnVv0-iGdcPFCdGtePKf9UVZdUdv99s',
+      claude: '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',
+      perplexity: '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',
+      grok: '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',
+      meta: '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',
+      copilot: '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',
+      deepseek: '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'
+    };
   });
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
 
@@ -107,8 +119,9 @@ export const ApiKeysManager = () => {
           <h3 className="font-semibold text-neon-blue mb-2">Important Information</h3>
           <ul className="space-y-1 text-sm text-muted-foreground">
             <li>• Your API keys are stored locally in your browser</li>
-            <li>• You need separate keys for ChatGPT and Gemini Pro</li>
-            <li>• Other 6 models use OpenRouter - you can use the same OpenRouter key for all</li>
+            <li>• ChatGPT now uses OpenRouter (same key as other models)</li>
+            <li>• Only Gemini Pro needs a separate Google API key</li>
+            <li>• 7 models use OpenRouter - you can use the same key for all</li>
             <li>• Keys are never sent to our servers</li>
           </ul>
         </div>
@@ -159,9 +172,9 @@ export const ApiKeysManager = () => {
           Getting Started
         </h3>
         <div className="space-y-2 text-sm text-muted-foreground">
-          <p><strong>ChatGPT:</strong> Get your API key from <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-neon-green hover:underline">OpenAI Platform</a></p>
+          <p><strong>ChatGPT:</strong> Get your API key from <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-neon-green hover:underline">OpenRouter</a> (same as other models)</p>
           <p><strong>Gemini Pro:</strong> Get your API key from <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-neon-green hover:underline">Google AI Studio</a></p>
-          <p><strong>Other Models:</strong> Get your OpenRouter key from <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-neon-green hover:underline">OpenRouter</a> (works for all 6 remaining models)</p>
+          <p><strong>Other Models:</strong> All other models use <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-neon-green hover:underline">OpenRouter</a> - you can use the same key for all 7 models</p>
         </div>
       </Card>
     </div>
