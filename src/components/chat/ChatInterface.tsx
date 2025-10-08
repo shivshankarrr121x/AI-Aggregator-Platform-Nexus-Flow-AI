@@ -69,7 +69,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   const callChatGPT = async (message: string): Promise<string> => {
     try {
       const apiKeys = getApiKeys();
-      const apiKey = apiKeys.chatgpt || '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';
+      const apiKey = apiKeys.chatgpt || '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';
       
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -124,7 +124,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   const callOpenRouter = async (message: string, modelName: string, modelKey: string): Promise<string> => {
     try {
       const apiKeys = getApiKeys();
-      const apiKey = apiKeys[modelKey] || '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';
+      const apiKey = apiKeys[modelKey] || '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';
       
       const modelMap: { [key: string]: string } = {
         'Claude': 'anthropic/claude-3.5-sonnet',
