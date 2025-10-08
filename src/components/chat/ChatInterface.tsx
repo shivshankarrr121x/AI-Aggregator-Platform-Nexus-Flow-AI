@@ -27,7 +27,7 @@ const INITIAL_MODELS: AIModel[] = [
   { id: "gpt-4", name: "GPT-4", color: "bg-green-500", enabled: true },
   { id: "claude", name: "Claude", color: "bg-orange-500", enabled: true },
   { id: "gemini", name: "Gemini Pro", color: "bg-blue-500", enabled: true },
-  { id: "perplexity", name: "Perplexity: Sonar Reasoning Pro", color: "bg-cyan-500", enabled: true },
+  { id: "perplexity", name: "Perplexity", color: "bg-cyan-500", enabled: true },
   { id: "grok", name: "Grok", color: "bg-purple-500", enabled: true },
   { id: "meta-ai", name: "Meta AI", color: "bg-blue-600", enabled: true },
   { id: "copilot", name: "Copilot", color: "bg-indigo-500", enabled: true },
@@ -62,14 +62,14 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   // API calling functions from the original code
   const callOpenAI = async (message: string): Promise<string> => {
     try {
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completion', {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'openai/gpt-5-chat',
+          model: 'gpt-3.5-turbo',
           messages: [{ role: 'user', content: message }],
           max_tokens: 1000
         }),
@@ -112,24 +112,24 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   const callOpenRouter = async (message: string, model: string): Promise<string> => {
     try {
       const modelMap: { [key: string]: string } = {
-        'Claude': 'anthropic/claude-opus-4.1',
-        'Perplexity: Sonar Reasoning Pro': 'perplexity/sonar-reasoning-pro',
-        'Grok': 'x-ai/grok-3-mini',
-        'Meta AI': 'meta-llama/llama-3.3-8b-instruct:free',
-        'Copilot': 'microsoft/phi-3.5-mini-128k-instruct',
-        'Deepseek': 'deepseek/deepseek-r1-distill-llama-70b:free'
+        'Claude': 'anthropic/claude-3-haiku',
+        'Perplexity': 'perplexity/llama-3.1-sonar-large-128k-online',
+        'Grok': 'x-ai/grok-2-1212',
+        'Meta AI': 'meta-llama/llama-3.2-3b-instruct:free',
+        'Copilot': 'microsoft/wizardlm-2-8x22b',
+        'DeepSeek': 'deepseek/deepseek-chat'
       };
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           model: modelMap[model] || 'deepseek/deepseek-chat',
           messages: [{ role: 'user', content: message }],
-          max_tokens: 10000
+          max_tokens: 1000
         }),
       });
 
@@ -212,7 +212,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
               <Brain className="w-5 h-5 text-background" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-neon">Nexus Flow AI</h1>
+              <h1 className="text-lg font-bold text-neon">Multi AI Prompt Tool</h1>
               <p className="text-sm text-muted-foreground">{enabledModels.length} of 8 AIs active</p>
             </div>
           </div>
