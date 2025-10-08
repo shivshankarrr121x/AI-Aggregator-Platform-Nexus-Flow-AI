@@ -72,14 +72,14 @@ export const ApiKeysManager = () => {
     
     // Set default API keys
     return {
-      chatgpt: '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',
+      chatgpt: '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',
       gemini: 'AIzaSyDUlnVv0-iGdcPFCdGtePKf9UVZdUdv99s',
-      claude: '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',
-      perplexity: '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',
-      grok: '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',
-      meta: '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',
-      copilot: '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',
-      deepseek: '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'
+      claude: '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',
+      perplexity: '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',
+      grok: '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',
+      meta: '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',
+      copilot: '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',
+      deepseek: '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'
     };
   });
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
