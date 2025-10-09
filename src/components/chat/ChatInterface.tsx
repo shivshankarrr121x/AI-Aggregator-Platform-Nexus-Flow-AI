@@ -71,6 +71,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       const apiKeys = getApiKeys();
       const apiKey = apiKeys.chatgpt || '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';
       
+      console.log('Calling ChatGPT with API key:', apiKey.substring(0, 20) + '...');
+      
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -84,11 +86,16 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         }),
       });
 
-      if (!response.ok) throw new Error('ChatGPT API failed');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('ChatGPT API error:', response.status, errorText);
+        throw new Error(`ChatGPT API failed: ${response.status} - ${errorText}`);
+      }
       
       const data = await response.json();
       return data.choices[0]?.message?.content || 'No response from ChatGPT';
     } catch (error) {
+      console.error('ChatGPT error:', error);
       return `ChatGPT Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   };
@@ -97,6 +104,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
     try {
       const apiKeys = getApiKeys();
       const apiKey = apiKeys.gemini || 'AIzaSyDUlnVv0-iGdcPFCdGtePKf9UVZdUdv99s';
+      
+      console.log('Calling Gemini with API key:', apiKey.substring(0, 15) + '...');
       
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
         method: 'POST',
@@ -112,11 +121,17 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         }),
       });
 
-      if (!response.ok) throw new Error('Gemini API failed');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Gemini API error:', response.status, errorText);
+        throw new Error(`Gemini API failed: ${response.status} - ${errorText}`);
+      }
       
       const data = await response.json();
+      console.log('Gemini response:', data);
       return data.candidates[0]?.content?.parts[0]?.text || 'No response from Gemini Pro';
     } catch (error) {
+      console.error('Gemini error:', error);
       return `Gemini Pro Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   };
@@ -135,6 +150,9 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         'DeepSeek': 'deepseek/deepseek-chat'
       };
 
+      const selectedModel = modelMap[modelName] || 'deepseek/deepseek-chat';
+      console.log(`Calling ${modelName} (${selectedModel}) with API key:`, apiKey.substring(0, 20) + '...');
+
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -142,17 +160,22 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: modelMap[modelName] || 'deepseek/deepseek-chat',
+          model: selectedModel,
           messages: [{ role: 'user', content: message }],
           max_tokens: 1000
         }),
       });
 
-      if (!response.ok) throw new Error(`${modelName} API failed`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`${modelName} API error:`, response.status, errorText);
+        throw new Error(`${modelName} API failed: ${response.status} - ${errorText}`);
+      }
       
       const data = await response.json();
       return data.choices[0]?.message?.content || `No response from ${modelName}`;
     } catch (error) {
+      console.error(`${modelName} error:`, error);
       return `${modelName} Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   };
