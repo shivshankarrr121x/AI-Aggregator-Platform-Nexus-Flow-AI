@@ -176,8 +176,8 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       
       const modelMap: { [key: string]: string } = {
         'Claude': 'anthropic/claude-3.5-sonnet',
-        'Perplexity': 'perplexity/llama-3.1-sonar-large-128k-online',
-        'Grok': 'x-ai/grok-2-1212',
+        'Perplexity': 'nousresearch/hermes-3-llama-3.1-405b:free',
+        'Grok': 'meta-llama/llama-3.2-3b-instruct:free',
         'Meta AI': 'meta-llama/llama-3.3-70b-instruct',
         'Copilot': 'openai/gpt-4o-mini',
         'DeepSeek': 'deepseek/deepseek-chat'
