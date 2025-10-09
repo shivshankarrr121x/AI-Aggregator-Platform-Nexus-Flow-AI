@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Brain, Send, Settings, X, ChevronRight, Loader2, ArrowLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 interface AIModel {
   id: string;
@@ -39,6 +40,7 @@ interface ChatInterfaceProps {
 }
 
 export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
+  const { toast } = useToast();
   const [models, setModels] = useState<AIModel[]>(INITIAL_MODELS);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -124,7 +126,16 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Gemini API error:', response.status, errorText);
-        throw new Error(`Gemini API failed: ${response.status} - ${errorText}`);
+        
+        let errorMessage = 'Gemini API failed';
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error?.message || errorText;
+        } catch {
+          errorMessage = errorText;
+        }
+        
+        throw new Error(`${response.status}: ${errorMessage}`);
       }
       
       const data = await response.json();
@@ -169,7 +180,16 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`${modelName} API error:`, response.status, errorText);
-        throw new Error(`${modelName} API failed: ${response.status} - ${errorText}`);
+        
+        let errorMessage = `${modelName} API failed`;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error?.message || errorText;
+        } catch {
+          errorMessage = errorText.substring(0, 100);
+        }
+        
+        throw new Error(`${response.status}: ${errorMessage}`);
       }
       
       const data = await response.json();
@@ -222,6 +242,15 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
           response = await callOpenRouter(inputMessage, model.name, "deepseek");
         }
 
+        // Check if response contains an error
+        if (response.includes('Error:')) {
+          toast({
+            title: `${model.name} Failed`,
+            description: response,
+            variant: "destructive",
+          });
+        }
+
         setMessages(prev => prev.map(msg => 
           msg.id === messageId 
             ? { ...msg, responses: { ...msg.responses, [model.id]: response } }
@@ -233,6 +262,12 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         ));
       } catch (error) {
         const errorMsg = `${model.name} Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        
+        toast({
+          title: `${model.name} Failed`,
+          description: error instanceof Error ? error.message : 'Unknown error',
+          variant: "destructive",
+        });
         
         setMessages(prev => prev.map(msg => 
           msg.id === messageId 
