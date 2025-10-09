@@ -64,22 +64,39 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
   // Get API keys from localStorage
   const getApiKeys = () => {
     const saved = localStorage.getItem("nexus_api_keys");
-    return saved ? JSON.parse(saved) : {};
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    // Return default keys if not saved
+    return {
+      chatgpt: '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',
+      gemini: 'AIzaSyDUlnVv0-iGdcPFCdGtePKf9UVZdUdv99s',
+      claude: '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',
+      perplexity: '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',
+      grok: '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',
+      meta: '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',
+      copilot: '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',
+      deepseek: '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'
+    };
   };
 
   // API calling functions
   const callChatGPT = async (message: string): Promise<string> => {
     try {
       const apiKeys = getApiKeys();
-      const apiKey = apiKeys.chatgpt || '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';
+      const apiKey = apiKeys.chatgpt;
       
-      console.log('Calling ChatGPT with API key:', apiKey.substring(0, 20) + '...');
+      if (!apiKey) {
+        throw new Error('No API key configured. Please add your OpenRouter API key in Settings.');
+      }
       
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
+          'HTTP-Referer': window.location.href,
+          'X-Title': 'Nexus Flow AI'
         },
         body: JSON.stringify({
           model: 'openai/gpt-4o-mini',
@@ -91,25 +108,27 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('ChatGPT API error:', response.status, errorText);
-        throw new Error(`ChatGPT API failed: ${response.status} - ${errorText}`);
+        throw new Error(`API returned ${response.status}: ${errorText.substring(0, 100)}`);
       }
       
       const data = await response.json();
-      return data.choices[0]?.message?.content || 'No response from ChatGPT';
+      return data.choices[0]?.message?.content || 'No response received';
     } catch (error) {
       console.error('ChatGPT error:', error);
-      return `ChatGPT Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      throw error;
     }
   };
 
   const callGemini = async (message: string): Promise<string> => {
     try {
       const apiKeys = getApiKeys();
-      const apiKey = apiKeys.gemini || 'AIzaSyDUlnVv0-iGdcPFCdGtePKf9UVZdUdv99s';
+      const apiKey = apiKeys.gemini;
       
-      console.log('Calling Gemini with API key:', apiKey.substring(0, 15) + '...');
+      if (!apiKey) {
+        throw new Error('No API key configured. Please add your Gemini API key in Settings.');
+      }
       
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +138,11 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
             parts: [{
               text: message
             }]
-          }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 1000,
+          }
         }),
       });
 
@@ -127,23 +150,22 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
         const errorText = await response.text();
         console.error('Gemini API error:', response.status, errorText);
         
-        let errorMessage = 'Gemini API failed';
+        let errorMessage = 'API key invalid or quota exceeded';
         try {
           const errorData = JSON.parse(errorText);
-          errorMessage = errorData.error?.message || errorText;
+          errorMessage = errorData.error?.message || errorText.substring(0, 100);
         } catch {
-          errorMessage = errorText;
+          errorMessage = errorText.substring(0, 100);
         }
         
-        throw new Error(`${response.status}: ${errorMessage}`);
+        throw new Error(errorMessage);
       }
       
       const data = await response.json();
-      console.log('Gemini response:', data);
-      return data.candidates[0]?.content?.parts[0]?.text || 'No response from Gemini Pro';
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response received';
     } catch (error) {
       console.error('Gemini error:', error);
-      return `Gemini Pro Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      throw error;
     }
   };
 
@@ -220,7 +242,7 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
     ));
 
     // Call AI APIs in parallel
-    const promises = enabledModels.map(async (model) => {
+    enabledModels.forEach(async (model) => {
       try {
         let response = "";
         
@@ -242,15 +264,6 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
           response = await callOpenRouter(inputMessage, model.name, "deepseek");
         }
 
-        // Check if response contains an error
-        if (response.includes('Error:')) {
-          toast({
-            title: `${model.name} Failed`,
-            description: response,
-            variant: "destructive",
-          });
-        }
-
         setMessages(prev => prev.map(msg => 
           msg.id === messageId 
             ? { ...msg, responses: { ...msg.responses, [model.id]: response } }
@@ -261,17 +274,17 @@ export const ChatInterface = ({ onBack }: ChatInterfaceProps) => {
           m.id === model.id ? { ...m, isLoading: false } : m
         ));
       } catch (error) {
-        const errorMsg = `${model.name} Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        const errorMsg = error instanceof Error ? error.message : 'Unknown error';
         
         toast({
           title: `${model.name} Failed`,
-          description: error instanceof Error ? error.message : 'Unknown error',
+          description: errorMsg,
           variant: "destructive",
         });
         
         setMessages(prev => prev.map(msg => 
           msg.id === messageId 
-            ? { ...msg, responses: { ...msg.responses, [model.id]: errorMsg } }
+            ? { ...msg, responses: { ...msg.responses, [model.id]: `Error: ${errorMsg}` } }
             : msg
         ));
 
